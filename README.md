@@ -1,5 +1,5 @@
 # KOChanceCalculator
-KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design. Download this program by clicking "Releases".
+KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design.
 
 ![Screenshot](https://i.imgur.com/A4XECQL.png)
 
