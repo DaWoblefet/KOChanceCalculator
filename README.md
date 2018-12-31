@@ -1,4 +1,25 @@
 # KOChanceCalculator
-This program is used to calculate the chance of a combination attack KOing a Pokemon.
+KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design. Download this program by clicking "Releases".
 
-To compile, use javac KOChanceGUI.java, and to run use java KOChanceGUI. To build an executable jar, use -jar cvfm KOChanceCalculator.jar manifest.MF KOChanceGUI.class woblescientist.png
+This program is used to calculate the exact chance of a combination attack KOing a Pokemon. Results are given as a percent, as a raw fraction, and as a simplied fraction. For example, suppose you wanted to calculate the odds of 4 Attack Incineroar and +2 Timid Xerneas Moonblast KOing a 252 HP / 4 Sp. Def Stakataka when used together as a combination attack.
+
+Steps:
+1) Input the HP stat of the target Pokemon. In this case, Stakataka has 168 HP.
+2) Copy and paste the damage rolls for each of your attacks from the damage calculator (https://trainertower.com/damagecalc/). In this case, here are the damage rolls for each:
+
++2 252 SpA Fairy Aura Xerneas Moonblast vs. 252 HP / 4 SpD Stakataka: 106-126 (63 - 75%) -- guaranteed 2HKO
+(106, 108, 109, 110, 111, 113, 114, 115, 117, 117, 119, 120, 121, 123, 124, 126)
+4 Atk Incineroar Flare Blitz vs. 252 HP / 0 Def Stakataka: 42-49 (25 - 29.1%) -- guaranteed 4HKO
+(42, 42, 42, 43, 43, 43, 45, 45, 45, 46, 46, 46, 48, 48, 48, 49)
+
+You want to paste in just the numbers between the parentheses. So paste in 106, 108, 109, 110, 111, 113, 114, 115, 117, 117, 119, 120, 121, 123, 124, 126 and 42, 42, 42, 43, 43, 43, 45, 45, 45, 46, 46, 46, 48, 48, 48, 49 for set 1 and set 2.
+
+3) Press Calculate. In our case, we see this combination attack has only a 17.578125% chance to KO. Not too great.
+
+Let's add U-turn chip damage and see what happens. To add U-turn, simply press "+" and paste in the damage rolls for U-turn. In this case, it's 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10. After pressing Calculate, you see that the odds of KOing Stakataka now have jumped considerably, to 60.791015625%!
+
+NOTE: if you add a lot of damage rolls (like more than 5), the program may lag and run more slowly, but it's working.
+
+To compile: javac KOChanceGUI.java
+To run: java KOChanceGUI
+To build an executable jar: -jar cvfm KOChanceCalculator.jar manifest.MF KOChanceGUI.class woblescientist.png
