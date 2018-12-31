@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class KOChanceGUI extends Application
 {
 	private final Clipboard clipboard = Clipboard.getSystemClipboard();
-    private final ClipboardContent content = new ClipboardContent();
+	private final ClipboardContent content = new ClipboardContent();
 
 	@Override
 	public void start(Stage primaryStage)
