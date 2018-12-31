@@ -158,7 +158,7 @@ public class KOChanceGUI extends Application
 
 		Scene scene = new Scene(pane, 590, 300);
 		primaryStage.setTitle("KO Chance Calculator");
-		Image icon = new Image(KOChanceGUI.class.getResourceAsStream("avi-dawoblefet-1-big.png"));
+		Image icon = new Image(KOChanceGUI.class.getResourceAsStream("woblescientist.png"));
 		primaryStage.getIcons().add(icon);
 		primaryStage.setScene(scene);
 		primaryStage.show();
