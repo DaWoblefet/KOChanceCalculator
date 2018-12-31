@@ -1,6 +1,8 @@
 # KOChanceCalculator
 KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design. Download this program by clicking "Releases".
 
+![Screenshot](https://i.imgur.com/A4XECQL.png)
+
 This program is used to calculate the exact chance of a combination attack KOing a Pokemon (2 or more attacks). It can also be used to get more precise % to KO chances than the damage calculator currently provides. Results are given as a percent, as a raw fraction, and as a simplied fraction.
 
 
