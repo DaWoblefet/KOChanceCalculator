@@ -1,4 +1,4 @@
-# KOChanceCalculator
+# KO Chance Calculator
 KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design.
 
 ![Screenshot](https://i.imgur.com/A4XECQL.png)
@@ -33,6 +33,4 @@ Copy and paste this in 4 times. We see the given percent chance to KO is 25.7568
 
 NOTE: if you add a lot of damage rolls (like more than 5), the program may lag and run more slowly, but it's working.
 
-- To compile: `javac KOChanceGUI.java`
-- To run: `java KOChanceGUI`
-- To build an executable jar: `-jar cvfm KOChanceCalculator.jar manifest.MF KOChanceGUI.class woblescientist.png`
+Built in the Eclipse IDE. To build an executable JAR, right click the package -> export -> runnable JAR file, specify a path, and leave other settings the same.

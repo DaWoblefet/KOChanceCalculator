@@ -1,3 +1,5 @@
+package kochancecalculator;
+
 /*Written by Leonard Craft III (DaWoblefet), with algorithm design by Ansel Blume (Stats).*/
 
 import javafx.application.Application;
@@ -13,7 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class KOChanceGUI extends Application
 {
@@ -53,17 +55,17 @@ public class KOChanceGUI extends Application
 			rollTFs.add(new TextField());
 			rollTFs.get(i).setPrefWidth(550);
 
-			rollsInput.setConstraints(rollLabels.get(i), 0, i);
-			rollsInput.setConstraints(rollTFs.get(i), 1, i);
+			GridPane.setConstraints(rollLabels.get(i), 0, i);
+			GridPane.setConstraints(rollTFs.get(i), 1, i);
 
 			rollsInput.getChildren().addAll(rollLabels.get(i), rollTFs.get(i));
 		}
 
 		Button addRowButton = new Button("+");
-		rollsInput.setConstraints(addRowButton, 0, 2);
+		GridPane.setConstraints(addRowButton, 0, 2);
 		Button removeRowButton = new Button("-");
 		removeRowButton.setPrefWidth(25);
-		rollsInput.setConstraints(removeRowButton, 1, 2);
+		GridPane.setConstraints(removeRowButton, 1, 2);
 		rollsInput.getChildren().addAll(addRowButton, removeRowButton);
 
 		rollsInput.setVgap(2);
@@ -73,7 +75,7 @@ public class KOChanceGUI extends Application
 		GridPane results = new GridPane();
 
 		Button calcButton = new Button("Calculate");
-		results.setConstraints(calcButton, 0, 0);
+		GridPane.setConstraints(calcButton, 0, 0);
 
 		Label percentLabel = new Label(" Percent of the time:");
 		TextField percentTF = new TextField();
@@ -91,15 +93,15 @@ public class KOChanceGUI extends Application
 		reducedTF.setEditable(false);
 		Button copyReduced = new Button("Copy");
 
-		results.setConstraints(percentLabel, 0, 1);
-		results.setConstraints(percentTF, 1, 1);
-		results.setConstraints(copyPercent, 2, 1);
-		results.setConstraints(rawLabel, 0, 2);
-		results.setConstraints(rawTF, 1, 2);
-		results.setConstraints(copyRaw, 2, 2);
-		results.setConstraints(reducedLabel, 0, 3);
-		results.setConstraints(reducedTF, 1, 3);
-		results.setConstraints(copyReduced, 2, 3);
+		GridPane.setConstraints(percentLabel, 0, 1);
+		GridPane.setConstraints(percentTF, 1, 1);
+		GridPane.setConstraints(copyPercent, 2, 1);
+		GridPane.setConstraints(rawLabel, 0, 2);
+		GridPane.setConstraints(rawTF, 1, 2);
+		GridPane.setConstraints(copyRaw, 2, 2);
+		GridPane.setConstraints(reducedLabel, 0, 3);
+		GridPane.setConstraints(reducedTF, 1, 3);
+		GridPane.setConstraints(copyReduced, 2, 3);
 
 		results.getChildren().addAll(calcButton, percentLabel, percentTF, copyPercent, rawLabel, rawTF, copyRaw, reducedLabel, reducedTF, copyReduced);
 		results.setHgap(5);
@@ -112,10 +114,10 @@ public class KOChanceGUI extends Application
 			int index = rollTFs.size() - 1;
 			rollTFs.get(index).setPrefWidth(550);
 
-			rollsInput.setConstraints(rollLabels.get(index), 0, index);
-			rollsInput.setConstraints(rollTFs.get(index), 1, index);
-			rollsInput.setConstraints(addRowButton, 0, index + 1);
-			rollsInput.setConstraints(removeRowButton, 1, index + 1);
+			GridPane.setConstraints(rollLabels.get(index), 0, index);
+			GridPane.setConstraints(rollTFs.get(index), 1, index);
+			GridPane.setConstraints(addRowButton, 0, index + 1);
+			GridPane.setConstraints(removeRowButton, 1, index + 1);
 
 			rollsInput.getChildren().addAll(rollLabels.get(index), rollTFs.get(index));
 		});
@@ -129,13 +131,12 @@ public class KOChanceGUI extends Application
 			rollLabels.remove(index);
 			rollTFs.remove(index);
 
-			rollsInput.setConstraints(addRowButton, 0, index);
-			rollsInput.setConstraints(removeRowButton, 1, index);
+			GridPane.setConstraints(addRowButton, 0, index);
+			GridPane.setConstraints(removeRowButton, 1, index);
 		});
 
 		calcButton.setOnAction(e -> {
 			int HPStat = Integer.parseInt(hpTF.getText());
-
 
 			int[][] damageRollSets = new int[rollTFs.size()][16];
 
@@ -144,11 +145,10 @@ public class KOChanceGUI extends Application
 				damageRollSets[i] = parseDamageRolls(rollTFs.get(i).getText());
 			}
 
-			int rawCount = getKOChance(HPStat, damageRollSets);
-			int possibleCombinations = (int) Math.pow(16, rollTFs.size());
-			percentTF.setText(100.0 * rawCount / possibleCombinations + "% chance to KO");
-			rawTF.setText(rawCount + "/" + possibleCombinations);
-			reducedTF.setText(reduceFraction(rawCount, possibleCombinations));
+			KOChanceLogic calculation = new KOChanceLogic(HPStat, damageRollSets);
+			percentTF.setText(calculation.getPercentToKO());
+			rawTF.setText(calculation.getFractionToKO());
+			reducedTF.setText(calculation.getSimplifiedFractionToKO());
 		});
 
 		helpButton.setOnAction(e -> {openHelp();});
@@ -158,7 +158,7 @@ public class KOChanceGUI extends Application
 
 		Scene scene = new Scene(pane, 590, 300);
 		primaryStage.setTitle("KO Chance Calculator");
-		Image icon = new Image(KOChanceGUI.class.getResourceAsStream("woblescientist.png"));
+		Image icon = new Image(getClass().getResourceAsStream("/resources/woblescientist.png"));
 		primaryStage.getIcons().add(icon);
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -192,64 +192,7 @@ public class KOChanceGUI extends Application
 		}
 
 		return damageRolls;
-	}
-
-	public int getKOChance(int HPStat, int[][] dmgRolls)
-	{
-		//Turns all the sets of damage rolls into a big arraylist.
-		ArrayList<Integer> combinedRolls = new ArrayList<Integer>();
-
-		for (int i = 0; i < dmgRolls[0].length; i++)
-		{
-			combinedRolls.add(dmgRolls[0][i]);
-		}
-
-		int result = getKOChance(HPStat, combinedRolls, 1, dmgRolls);
-		return result;
-	}
-
-	//Generates all combinations of possible damage rolls recursively and compares each against an HP stat. Blame Stats if the algorithm's bad.
-	public int getKOChance(int HPStat, ArrayList<Integer> combinedRolls, int beginIndex, int[][] dmgRolls)
-	{
-
-		if (beginIndex >= dmgRolls.length)
-		{
-			int count = 0;
-
-			for (int i = 0; i < combinedRolls.size(); i++)
-			{
-				if (combinedRolls.get(i) >= HPStat) count++;
-			}
-
-			System.out.println(100.0 * count / combinedRolls.size() + "% chance to KO");
-			System.out.println("Fraction equivalent: " + reduceFraction(count, combinedRolls.size()));
-			return count;
-		}
-
-		ArrayList<Integer> newRolls = new ArrayList<Integer>();
-
-		for (int i = 0; i < combinedRolls.size(); i++)
-		{
-			for (int j = 0; j < dmgRolls[beginIndex].length; j++)
-			{
-				newRolls.add(combinedRolls.get(i) + dmgRolls[beginIndex][j]);
-			}
-		}
-
-		return getKOChance(HPStat, newRolls, beginIndex + 1, dmgRolls);
-	}
-
-	public String reduceFraction(int top, int bottom)
-	{
-		int gcd = getGCD(top, bottom);
-		return top / gcd + "/" + bottom / gcd;
-	}
-
-	public int getGCD(int top, int bottom)
-	{
-		if (bottom == 0) {return top;}
-		return getGCD(bottom, top%bottom);
-	}
+	}	
 
 	public void copyToClipboard(String data)
 	{
@@ -261,7 +204,21 @@ public class KOChanceGUI extends Application
 	public void openHelp()
 	{
 		Stage stage = new Stage();
-		TextArea helpText = new TextArea("KO Chance Calculator, written by DaWoblefet. Special thanks to Stats for algorithm design.\n\nThis program is used to calculate the chance of a combination attack KOing a Pokemon.\n\nSteps:\n1) Input the HP stat of the target Pokemon.\n2) Copy and paste the damage rolls for each of your attacks from the damage calculator. If needed, use the \"+\" or \"-\" buttons to add or remove sets of damage rolls as necessary.\n3) Press Calculate.\n\nNOTE: if you add a lot of damage rolls (like more than 5), the program may lag and run more slowly, but it's working.");
+		String helpTextRaw = "";
+		try
+		{
+			Scanner input = new Scanner((getClass().getResourceAsStream("/resources/helptext.txt")));
+			while (input.hasNextLine())
+			{
+				helpTextRaw += input.nextLine() + "\n";
+			}
+			input.close();
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
+		TextArea helpText = new TextArea(helpTextRaw);
 		helpText.setEditable(false);
 		helpText.setWrapText(true);
 		helpText.setPrefRowCount(19);
@@ -271,5 +228,10 @@ public class KOChanceGUI extends Application
 		stage.setTitle("Help");
 		stage.show();
 		return;
+	}
+	
+	public static void main(String[] args)
+	{
+		launch(args);
 	}
 }
